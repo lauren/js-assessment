@@ -2,36 +2,30 @@ if (typeof define !== 'function') { var define = require('amdefine')(module); }
 
 define(function() {
   return {
-    listFiles: function (data, dirName) {
-    	// var result = [];
-    	// var findFiles = function (thisData) {
-    	// 	var firstFile,
-    	// 		remainingFiles;
-    	// 	console.log(thisData);
-    	// 	if (thisData.length === 0) {
-    	// 		console.log(result);
-    	// 		return result;
-    	// 	} else if (thisData.length === 1) {
-    	// 		if (typeof thisData[0] === "string") {
-    	// 			result.push(thisData[0]);
-    	// 		} else {
-    	// 			result.concat(findFiles(thisData[0].files));
-    	// 		}
-    	// 	} else {
-    	// 		first = thisData[0];
-    	// 		remaining = thisData.slice(1,thisData.length);
-    	// 		console.log(thisData);
-    	// 		console.log(remaining);
-    	// 		if (typeof first === "string") {
-    	// 			result.concat([first], findFiles(remainingFiles));
-    	// 		} else {
-    	// 			result.concat(findFiles(first.files), findFiles(remaining));
-    	// 		}
-    	// 	}
-    	// 	console.log(result);
-    	// 	return result;
-    	// }
-    	// return findFiles([data]);
+    listFiles: function (data, dirName, directoryMatch) {
+    	var findFilesInObj = function (thisObj, files, directoryMatch) {
+    		var directoryMatch = directoryMatch || dirName && dirName === thisObj.dir;
+    		if (thisObj.files) {
+	    		return files.concat(findFilesInArray(thisObj.files, files, directoryMatch));
+    		} else {
+    			console.log(files);
+    			return files;
+    		}
+    	};
+    	var findFilesInArray = function (thisArray, files, directoryMatch) {
+    		if (thisArray.length === 0) {
+    			return files;
+    		} else {
+    			if (thisArray[0].files) {
+    				return files.concat(findFilesInObj(thisArray[0], files, directoryMatch), findFilesInArray(thisArray.slice(1, thisArray.length), files, directoryMatch));
+    			} else {
+    				return (!dirName || directoryMatch) 
+    					? files.concat([thisArray[0]], findFilesInArray(thisArray.slice(1, thisArray.length), files, directoryMatch))
+    					: files.concat(findFilesInArray(thisArray.slice(1, thisArray.length), files, directoryMatch));
+    			}
+    		}
+    	};
+    	return findFilesInObj(data, []);
     },
 
     permute: function (arr) {
