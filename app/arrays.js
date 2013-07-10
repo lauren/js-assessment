@@ -12,21 +12,15 @@ define(function () {
     },
 
     sum : function (arr) {
-        var result = 0;
-        for (var i = 0; i < arr.length; i++) {
-            result += arr[i];
-        }
-        return result;
+        return arr.reduce(function (a, b) {
+            return a + b;
+        });
     },
 
     remove : function (arr, item) {
-        var result = [];
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i] != item) {
-                result.push(arr[i]);
-            }
-        }
-        return result;
+        return arr.filter(function (element) {
+            return (element != item);
+        });
     },
 
     removeWithoutCopy : function (arr, item) {
@@ -68,13 +62,9 @@ define(function () {
     },
 
     count : function (arr, item) {
-        var counter = 0;
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i] === item) {
-                counter++;
-            }
-        }
-        return counter;
+        return arr.reduce(function (a, b) {
+            return (a === item) ? b + 1 : b;
+        });
     },
 
     duplicates : function (arr) {
