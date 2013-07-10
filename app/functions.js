@@ -17,16 +17,11 @@ define(function () {
     },
 
     makeClosures : function (arr, fn) {
-        var result = [];
-        var applyFn = function (value) {
+        return arr.map(function (item) {
             return function () {
-                return fn(value);
+                return fn(item);
             }
-        }
-        for (var i = 0; i < arr.length; i++) {
-            result[i] = applyFn(arr[i]);
-        }
-        return result;
+        });
     },
 
     partial : function (fn, str1, str2) {
@@ -36,11 +31,9 @@ define(function () {
     },
 
     useArguments : function () {
-        var result = 0;
-        for (var i = 0; i < arguments.length; i++) {
-            result += arguments[i];
-        }
-        return result;
+        return Array.prototype.slice.call(arguments).reduce(function (a, b) {
+            return a + b;
+        });
     },
 
     callIt : function (fn) {
