@@ -49,6 +49,7 @@ define([
 
       var counter = answers.count(1, 5);
       counter.cancel();
+      console.log(nums);
 
       setTimeout(function () {
         expect(nums.length < 5).to.be.ok;
